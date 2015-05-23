@@ -9,7 +9,9 @@ import /init.usb.rc
 import /init.${ro.hardware}.rc
 import /init.${ro.zygote}.rc
 import /init.trace.rc
-import /init.evervolv.rc
+# Include NOSP's extra init file
+import /init.nosp.rc
+
 
 on early-init
     # Set init and its forked children's oom_adj.
@@ -599,15 +601,9 @@ service installd /system/bin/installd
     class main
     socket installd stream 600 system system
 
-service flash_recovery /system/etc/install-cm-recovery.sh
+service flash_recovery /system/bin/install-recovery.sh
     class main
-    seclabel u:r:install_recovery:s0
     oneshot
-    disabled
-
-# update recovery if enabled
-on property:persist.sys.recovery_update=true
-    start flash_recovery
 
 service racoon /system/bin/racoon
     class main
